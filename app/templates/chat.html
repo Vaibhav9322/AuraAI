@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace - {{ app_name }}</title>
+    <meta name="description" content="{{ app_name }} AI Workspace">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js Syntax Highlighting Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <link rel="stylesheet" href="/static/css/sidebar.css">
+    <link rel="stylesheet" href="/static/css/chat.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="brand-icon">✦</div>
+                    <span>{{ app_name }}</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- New Chat Button -->
+                <button id="new-chat-btn" class="sidebar-new-chat-btn">
+                    <span>+</span>
+                    <span>New Chat</span>
+                </button>
+
+                <!-- Search Input -->
+                <div class="sidebar-search-container">
+                    <span class="sidebar-search-icon">🔍</span>
+                    <input type="text" id="sidebar-search" class="sidebar-search-input" placeholder="Search conversations...">
+                </div>
+
+                <!-- Grouped Conversation History Container -->
+                <div id="history-container">
+                    <div style="font-size: var(--font-size-xs); color: var(--text-muted); padding: var(--space-4); text-align: center;">
+                        Loading history...
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-menu" onclick="window.location.href='/logout'" title="Click to logout">
+                    <div class="user-avatar">{{ user.username[0] | upper }}</div>
+                    <div class="user-details">
+                        <span class="user-name">{{ user.username }}</span>
+                        <span class="user-email">{{ user.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-view">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-title">
+                    <span>✦</span>
+                    <span>{{ app_name }} Workspace</span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <select id="model-select" class="model-select">
+                        <option value="deepseek/deepseek-r1:free">DeepSeek R1 (100% Free)</option>
+                        <option value="google/gemini-2.0-flash-lite-preview-02-05:free">Gemini 2.0 Flash (100% Free)</option>
+                        <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (100% Free)</option>
+                    </select>
+
+                    <a href="/logout" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">
+                        Logout
+                    </a>
+                </div>
+            </header>
+
+            <!-- Chat Main Container -->
+            <div class="chat-container">
+                <div id="messages-viewport" class="messages-viewport">
+                    <!-- Welcome Screen (Default empty state) -->
+                    <div id="welcome-screen" class="welcome-screen">
+                        <div class="welcome-logo">✦</div>
+                        <h1 class="welcome-title">How can I help?</h1>
+                        <p class="welcome-subtitle">Ask anything, analyze files, write code, or solve complex problems.</p>
+
+                        <div class="prompt-suggestions-grid">
+                            <div class="prompt-card" data-prompt="Explain Docker containerization in simple terms with code examples">
+                                <div class="prompt-card-title">Explain Docker in simple terms</div>
+                                <div class="prompt-card-desc">Understand containers & DevOps basics</div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt="Write a Python script using FastAPI and SQLAlchemy to manage tasks">
+                                <div class="prompt-card-title">Write clean code</div>
+                                <div class="prompt-card-desc">Generate backend APIs & database logic</div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt="How do I analyze CSV and PDF documents efficiently with Python?">
+                                <div class="prompt-card-title">Analyze a document</div>
+                                <div class="prompt-card-desc">Extract context & summarize insights</div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt="Brainstorm 5 innovative micro-SaaS application ideas powered by AI">
+                                <div class="prompt-card-title">Brainstorm ideas</div>
+                                <div class="prompt-card-desc">Generate SaaS concepts & architecture</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Chat Composer -->
+                <div class="composer-wrapper">
+                    <!-- Hidden file upload input -->
+                    <input type="file" id="file-upload-input" style="display: none;" accept=".pdf,.docx,.txt,.csv,.json,.py,.java,.js,.ts,.html,.css,.sql,.md,.yaml">
+
+                    <!-- Attachment Preview Container -->
+                    <div id="attachment-preview-container" class="attachment-preview-container" style="display: none;"></div>
+
+                    <div class="composer-box">
+                        <textarea id="chat-input" class="composer-textarea" placeholder="Ask anything..." rows="1"></textarea>
+                        
+                        <div class="composer-actions">
+                            <div class="composer-tools">
+                                <button id="attach-file-btn" class="composer-icon-btn" title="Attach Document (PDF, DOCX, TXT, CSV, Code)">📎</button>
+                                <button id="stop-btn" class="composer-icon-btn" style="display: none; color: var(--status-error);" title="Stop Generation">⏹ Stop</button>
+                            </div>
+
+                            <button id="send-btn" class="send-btn" title="Send Message">
+                                ➤
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CDN Libraries for Markdown & Syntax Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- JavaScript Controllers -->
+    <script src="/static/js/sidebar.js"></script>
+    <script src="/static/js/files.js"></script>
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>

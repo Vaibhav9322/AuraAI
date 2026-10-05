@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - {{ app_name }}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+    <link rel="stylesheet" href="/static/css/settings.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="brand-icon">✦</div>
+                    <span>{{ app_name }}</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <a href="/chat" class="btn btn-secondary" style="width: 100%; justify-content: flex-start; margin-bottom: 1rem;">
+                    ← Back to Chat
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <span style="font-size: var(--font-size-xs); color: var(--text-muted);">{{ user.email }}</span>
+            </div>
+        </aside>
+
+        <main class="main-view">
+            <header class="top-bar">
+                <div class="top-bar-title">
+                    <span>⚙</span>
+                    <span>User Settings</span>
+                </div>
+            </header>
+
+            <div style="flex: 1; overflow-y: auto; padding: var(--space-6);">
+                <div class="settings-container">
+                    <div class="settings-header">
+                        <h1 class="settings-title">Preferences & Configuration</h1>
+                        <p class="settings-subtitle">Manage theme, default models, response styles, and personalization.</p>
+                    </div>
+
+                    <div id="settings-alert" class="auth-alert" style="display:none;"></div>
+
+                    <div class="settings-section">
+                        <div class="section-header">🎨 Appearance</div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Theme Mode</span>
+                                <span class="setting-desc">Choose between dark mode or light mode visual themes.</span>
+                            </div>
+                            <div class="theme-toggle-group">
+                                <button id="theme-dark-btn" class="theme-option-btn active">Dark</button>
+                                <button id="theme-light-btn" class="theme-option-btn">Light</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="section-header">🤖 AI Preferences</div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Default Model</span>
+                                <span class="setting-desc">Select default AI model for new conversations.</span>
+                            </div>
+                            <select id="settings-default-model" class="model-select">
+                                <option value="llama-3.3-70b-versatile">Groq / Llama 3.3 70B</option>
+                                <option value="gpt-4o">OpenAI / GPT-4o</option>
+                                <option value="claude-3-5-sonnet">Anthropic / Claude 3.5 Sonnet</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Response Style</span>
+                                <span class="setting-desc">Adjust formatting and detail level of AI answers.</span>
+                            </div>
+                            <select id="settings-response-style" class="model-select">
+                                <option value="concise">Concise & Direct</option>
+                                <option value="balanced" selected>Balanced & Helpful</option>
+                                <option value="creative">Detailed & Creative</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="section-header">🧠 System Memory & Instructions</div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label class="form-label" for="settings-custom-prompt">Custom System Instructions</label>
+                            <textarea id="settings-custom-prompt" class="form-input" rows="4" placeholder="What would you like AuraAI to know about you to provide better responses? (e.g. 'I am a senior Python engineer. Prefer concise code with type hints.')"></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                        <button id="save-settings-btn" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/settings.js"></script>
+</body>
+</html>
