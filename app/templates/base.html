@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ app_name }} - AI Assistant{% endblock %}</title>
+    <meta name="description" content="Production-grade AI Assistant Web Application powered by FastAPI and Python.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="brand-icon">✦</div>
+                    <span>{{ app_name }}</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                {% block sidebar_content %}
+                <div style="font-size: var(--font-size-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                    Navigation
+                </div>
+                <div style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                    Stage 1 System Active
+                </div>
+                {% endblock %}
+            </div>
+
+            <div class="sidebar-footer">
+                <span style="font-size: var(--font-size-xs); color: var(--text-muted);">v1.0.0</span>
+                <span class="badge badge-success">Stage 1</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-view">
+            <header class="top-bar">
+                <div class="top-bar-title">
+                    <span>✦</span>
+                    <span>{{ app_name }} Assistant</span>
+                </div>
+                <div>
+                    <span id="db-status-badge" class="badge badge-warning">Checking DB...</span>
+                </div>
+            </header>
+
+            <div style="flex: 1; overflow-y: auto; padding: var(--space-6);">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script src="/static/js/app.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

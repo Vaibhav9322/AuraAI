@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ app_name }} - Stage 1 Architecture Verification{% endblock %}
+
+{% block content %}
+<div class="stage-card">
+    <div style="width: 56px; height: 56px; margin: 0 auto 1.5rem auto; background: var(--accent-subtle); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; color: var(--accent-light); font-size: 28px;">
+        ✦
+    </div>
+
+    <h1 class="stage-title">Welcome to {{ app_name }}</h1>
+    <p class="stage-desc">
+        Stage 1 Foundation & Architecture successfully deployed. FastAPI, Jinja2, SQLAlchemy, and MySQL database connection layers are initialized and ready for Stage 2 Authentication.
+    </p>
+
+    <div class="status-grid">
+        <div class="status-card">
+            <div class="status-label">Backend Framework</div>
+            <div class="status-value">FastAPI + Uvicorn</div>
+        </div>
+
+        <div class="status-card">
+            <div class="status-label">Database ORM</div>
+            <div class="status-value">SQLAlchemy 2.0</div>
+        </div>
+
+        <div class="status-card">
+            <div class="status-label">AI Provider</div>
+            <div class="status-value" id="ai-provider-value">{{ ai_provider | upper }}</div>
+        </div>
+
+        <div class="status-card">
+            <div class="status-label">Configured Model</div>
+            <div class="status-value" id="ai-model-value">{{ ai_model }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
